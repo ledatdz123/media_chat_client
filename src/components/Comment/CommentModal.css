@@ -1,0 +1,7 @@
+.comment{
+max-height: 40vh;
+overflow-y: scroll;
+}
+/*.comment::-webkit-scroll-bar{
+display: none;
+}*/

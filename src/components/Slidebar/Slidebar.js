@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { menu } from "./SlidebarConfig";
 import { useNavigate } from "react-router-dom";
+import CreatePostModal from "../Post/CreatePostModal";
+import { useDisclosure } from "@chakra-ui/react";
 
 const Slidebar = () => {
   const [activeTab, setActiveTab]=useState();
+  const {isOpen, onOpen, onClose}=useDisclosure()
   const navigate=useNavigate()
   const handleTabClick=(title)=>{
     setActiveTab(title)
@@ -16,6 +19,9 @@ const Slidebar = () => {
     }
     else if(title==='Home'){
       navigate('/')
+    }
+    else if(title==='Create'){
+      onOpen()
     }
   }
   return (
@@ -39,6 +45,7 @@ const Slidebar = () => {
           <p className="ml-5">More</p>
         </div>
       </div>
+      <CreatePostModal onClose={onClose} isOpen={isOpen}/>
     </div>
   );
 };
