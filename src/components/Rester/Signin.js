@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import { currentUserAction, signinAction } from "../../Redux/Auth/Action";
 import { useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
+import { getUserProfile } from "../../Redux/User/Action";
 const Signin = () => {
   const [openSnackbar, setOpenSnackbar]=useState(false)
   const handleSnackBarClose=()=>{

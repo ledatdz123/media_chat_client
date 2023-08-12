@@ -10,10 +10,18 @@ import { FaPhotoVideo } from "react-icons/fa";
 import { GrEmoji } from "react-icons/gr";
 import { GoLocation } from "react-icons/go";
 import './CreatePostModal.css'
+import axios from "axios";
+import { BASE_API } from "../../config/api";
+import { useDispatch } from "react-redux";
+import { createPostAction } from "../../Redux/Post/Action";
 const CreatePostModal = ({ onClose, isOpen }) => {
   const [isDragOver, setIsDragOver]=useState(false)
   const [file, setFile]=useState()
-  const [caption, setCaption]=useState()
+  const [caption, setCaption]=useState("")
+  const [imageUrl, setImageUrl]=useState("")
+  const [location, setLocation]=useState("")
+  const token = localStorage.getItem("tokenChat")
+  const dispatch=useDispatch()
   const handleDrop=(e)=>{
     e.preventDefault()
     const dropFile=e.dataTransfer.files[0]
@@ -32,6 +40,7 @@ const CreatePostModal = ({ onClose, isOpen }) => {
   const handleChange=(e)=>{
     const file=e.target.files[0]
     if(file && (file.type.startsWith("image/") || file.type.startsWith("video/"))){
+      uploadImage(file)
       setFile(file)
     }else{
       setFile(null)
@@ -40,6 +49,32 @@ const CreatePostModal = ({ onClose, isOpen }) => {
   }
   const handleCaptionChange=(e)=>{
     setCaption(e.target.value)
+  }
+  const uploadImage = async (image) => {
+    const data = new FormData();
+    data.append("file", image);
+    const res = await axios({
+      method: "POST",
+      baseURL: `${BASE_API}/api/`,
+      url: "upload",
+      data: data,
+    });
+    console.log("image-----------current--------------", res);
+    setImageUrl(res.data.message);
+  };
+  const handleCreatePost=()=>{
+    const data={
+      jwt: token,
+      data:{
+        caption,
+        location,
+        image: imageUrl,
+      }
+    }
+    dispatch(createPostAction(data))
+    onClose()
+    setImageUrl("")
+    setFile(null);
   }
   return (
     <div>
@@ -53,6 +88,7 @@ const CreatePostModal = ({ onClose, isOpen }) => {
               variant={"ghost"}
               size={"sm"}
               colorScheme={"blue"}
+              onClick={handleCreatePost}
             >
               Share
             </Button>
@@ -99,7 +135,8 @@ const CreatePostModal = ({ onClose, isOpen }) => {
               </div>
               <hr/>
               <div className="px-2 flex justify-between items-center">
-                <input className="locationInput" type="text" placeholder="location" name="location"/>
+                <input onChange={(e)=>setLocation(e.target.value)} 
+                className="locationInput" type="text" placeholder="location" name="location"/>
                 <GoLocation/>
               </div>
               <hr/>

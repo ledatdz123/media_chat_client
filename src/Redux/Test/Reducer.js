@@ -1,26 +1,26 @@
 import { REQUEST_CREATE_POST, REQUEST_DELETE_POST, REQUEST_RESET } from "./ActionType"
 
-export const PostReducer=(store={postItem: []}, action)=>{
+export const TestReducer=(store={testItem: []}, action)=>{
     switch(action.type){
         case 'REQUEST_POST':
             return {
                 ...store,
-                postItem: action.payload
+                testItem: action.payload
             }
         case 'REQUEST_CREATE_POST':
             const item=action.payload
             return{
                 ...store,
-                postItem: [...store.postItem, item]
+                testItem: [...store.testItem, item]
             }
         case REQUEST_DELETE_POST:
             return{
                 ...store,
-                postItem: store.postItem.filter(x=>x!==x.action.payload)
+                testItem: store.testItem.filter(x=>x!==x.action.payload)
             }
         case REQUEST_RESET:
             return{
-                postItem:[]
+                testItem:[]
             }
         default:
             return store;

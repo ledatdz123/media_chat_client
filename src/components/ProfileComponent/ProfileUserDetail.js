@@ -1,6 +1,9 @@
 import React from 'react'
 import { TbCircleDashed } from 'react-icons/tb'
+import { useSelector } from 'react-redux'
 const ProfileUserDetail = () => {
+    const {auth}=useSelector((store)=>store)
+    console.log('auth--------------------', auth)
   return (
     <div className='py-10 w-full'>
         <div className='flex items-center'>
@@ -12,7 +15,7 @@ const ProfileUserDetail = () => {
             </div>
             <div className='space-y-5'>
                 <div className='flex space-x-10 items-center'>
-                    <p>username</p>
+                    <p>{auth.reqUser?.username}</p>
                     <button>Edit Profile</button>
                     <TbCircleDashed/>
                 </div>

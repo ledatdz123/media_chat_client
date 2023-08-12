@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { LOGOUT, REQ_USER, SEARCH_USER, SIGN_IN, SIGN_UP } from './ActionType'
+import { FOLLOW_USER, GET_USER_BY_IDS, LOGOUT, REQ_USER, SEARCH_USER, SIGN_IN, SIGN_UP, UN_FOLLOW_USER, UPDATE_USER } from './ActionType'
 import { BASE_API } from '../../config/api'
 export const signinAction=(data)=>async(dispatch)=>{
     try {
         const res=await axios({
             method: 'POST',
-            baseURL: 'https://media-chat-server.onrender.com/auth/',
+            baseURL: `${BASE_API}/auth/`,
             url: "login",
             data: data
         })
@@ -25,7 +25,7 @@ export const signupAction=(data)=>async(dispatch)=>{
     try {
         const res=await axios({
             method: 'POST',
-            baseURL: 'http://localhost:9110/auth/',
+            baseURL: `${BASE_API}/auth/`,
             url: "register",
             data: data
         })
@@ -44,7 +44,7 @@ export const currentUserAction=(token)=>async(dispatch)=>{
     try {
         const res=await axios({
             method: 'GET',
-            baseURL: `${BASE_API}/auth/`,
+            baseURL: `${BASE_API}/api/users/`,
             url: "profile",
             headers: {
                 "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${token}`,
@@ -62,12 +62,36 @@ export const currentUserAction=(token)=>async(dispatch)=>{
         console.log(error)
     }
 }
+export const updateUser=(token, data)=>async(dispatch)=>{
+    try {
+        const res= await axios(
+            {
+                method: 'PUT',
+                baseURL: `${BASE_API}/api/users/`,
+                url: `update`,
+                data: data,
+                headers: {
+                    "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${token}`,
+                    "Content-Type": "application/json" 
+                },
+            }
+        )
+        const resData=await res.data
+        console.log("searchData", resData)
+        dispatch({
+            type: UPDATE_USER,
+            payload: resData
+        })
+    } catch (error) {
+        console.log("catch error", error)
+    }
+}
 export const searchUser=(token, data)=>async(dispatch)=>{
     try {
         const res= await axios(
             {
                 method: 'GET',
-                baseURL: `http://localhost:9110/api/users/`,
+                baseURL: `${BASE_API}/api/users/`,
                 url: `search?name=${data}`,
                 headers: {
                     "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${token}`,
@@ -89,4 +113,73 @@ export const handleLogoutUser=()=>async(dispatch)=>{
     localStorage.removeItem("tokenChat")
     dispatch({type: LOGOUT, payload:null})
     dispatch({type: REQ_USER, payload:null})
+}
+export const findUserByUserIdsAction=(data)=>async(dispatch)=>{
+    try {
+        const res= await axios(
+            {
+                method: 'GET',
+                baseURL: `${BASE_API}/api/posts/`,
+                url: `follow/${data.data}`,
+                headers: {
+                    "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${data.jwt}`,
+                    "Content-Type": "application/json" 
+                },
+            }
+        )
+        const resData=await res.data
+        console.log("searchData", resData)
+        dispatch({
+            type: GET_USER_BY_IDS,
+            payload: resData
+        })
+    } catch (error) {
+        console.log("catch error", error)
+    }
+}
+export const followUserAction=(data, token)=>async(dispatch)=>{
+    try {
+        const res= await axios(
+            {
+                method: 'POST',
+                baseURL: `${BASE_API}/api/userfollow`,
+                url: `m/${data}`,
+                headers: {
+                    "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${token}`,
+                    "Content-Type": "application/json" 
+                },
+            }
+        )
+        const resData=await res.data
+        console.log("searchData", resData)
+        dispatch({
+            type: FOLLOW_USER,
+            payload: resData
+        })
+    } catch (error) {
+        console.log("catch error", error)
+    }
+}
+export const unFollowUserAction=(data, token)=>async(dispatch)=>{
+    try {
+        const res= await axios(
+            {
+                method: 'POST',
+                baseURL: `${BASE_API}/api/userfollow`,
+                url: `m/${data}`,
+                headers: {
+                    "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${token}`,
+                    "Content-Type": "application/json" 
+                },
+            }
+        )
+        const resData=await res.data
+        console.log("searchData", resData)
+        dispatch({
+            type: UN_FOLLOW_USER,
+            payload: resData
+        })
+    } catch (error) {
+        console.log("catch error", error)
+    }
 }

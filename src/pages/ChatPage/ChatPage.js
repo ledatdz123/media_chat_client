@@ -81,6 +81,7 @@ const ChatPage = () => {
   };
   const handleLogout = () => {
     dispatch(handleLogoutUser());
+    navigate("/")
   };
   const handleSearch = (keyword) => {
     dispatch(searchUser(token, keyword));

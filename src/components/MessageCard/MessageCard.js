@@ -8,39 +8,47 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 import { BASE_API } from "../../config/api";
-const MessageCard = ({ isReqUserMessage, content, image, messageId, currentChat }) => {
-  const [check ,setCheck] = useState();
+const MessageCard = ({
+  isReqUserMessage,
+  content,
+  image,
+  messageId,
+  currentChat,
+}) => {
+  const [check, setCheck] = useState();
   const [smile, setSmile] = useState([]);
-  const [angry, setAngry]=useState([]);
+  const [angry, setAngry] = useState([]);
 
-  const [heart, setHeart]=useState([]);
-  const [sad, setSad]=useState([]);
+  const [heart, setHeart] = useState([]);
+  const [sad, setSad] = useState([]);
 
   const [hover, setHover] = useState(false);
-  const [openReact, setOpenReact]=useState(false)
-  const token=localStorage.getItem("tokenChat")
-  useEffect(()=>{
-    if (currentChat?.id)
-    getAllMessageEmoji()
-  }, [currentChat, check])
+  const [openReact, setOpenReact] = useState(false);
+  const token = localStorage.getItem("tokenChat");
+  useEffect(() => {
+    if (currentChat?.id) getAllMessageEmoji();
+  }, [currentChat, check]);
 
   const getAllMessageEmoji = async () => {
     try {
-      const res=await fetch(`${BASE_API}/api/react/message/${messageId}/reacts`,{
+      const res = await fetch(
+        `${BASE_API}/api/react/message/${messageId}/reacts`,
+        {
           method: "GET",
           headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-      })
-      const data=await res.json();
-      setSmile(data.filter(e=>e.content==='funny'))
-      setAngry(data.filter(e=>e.content==='angry'))
-      setHeart(data.filter(e=>e.content==='heart'))
-      setSad(data.filter(e=>e.content==='sad'))
-  } catch (error) {
-      console.log("loi trycatch chat", error)
-  }
+        }
+      );
+      const data = await res.json();
+      setSmile(data.filter((e) => e.content === "funny"));
+      setAngry(data.filter((e) => e.content === "angry"));
+      setHeart(data.filter((e) => e.content === "heart"));
+      setSad(data.filter((e) => e.content === "sad"));
+    } catch (error) {
+      console.log("loi trycatch chat", error);
+    }
   };
   const handleHover = (e) => {
     setHover(true);
@@ -48,56 +56,45 @@ const MessageCard = ({ isReqUserMessage, content, image, messageId, currentChat 
   const handleLeave = (e) => {
     setHover(false);
   };
-  const handleOpenReactOption=(e)=>{
-    setOpenReact(!openReact)
-  }
-  const createData=async(type)=>{
+  const handleOpenReactOption = (e) => {
+    setOpenReact(!openReact);
+  };
+  const createData = async (type) => {
     try {
-      const res=await fetch(`${BASE_API}/api/react/message/${messageId}/reacts`,{
+      const res = await fetch(
+        `${BASE_API}/api/react/message/${messageId}/reacts`,
+        {
           method: "POST",
           headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(type)
-      })
-      const data=await res.json();
-      setCheck(data)
-  } catch (error) {
-      console.log("loi trycatch message", error)
-  }
-  }
-  const chooseSmile=async()=>{
-    const smile={content: "funny"}
-  //   try {
-  //     const res=await fetch(`${BASE_API}/api/react/message/${messageId}/reacts`,{
-  //         method: "POST",
-  //         headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify(smile)
-  //     })
-  //     const data=await res.json();
-  //     setCheck(data)
-  // } catch (error) {
-  //     console.log("loi trycatch message", error)
-  // }
-  createData(smile)
-    setOpenReact(!openReact)
-  }
-  const chooseAngry=()=>{
-    setAngry(angry+1)
-    setOpenReact(!openReact)
-  }
-  const chooseHeart=()=>{
-    setHeart(heart+1)
-    setOpenReact(!openReact)
-  }
-  const chooseSad=()=>{
-    setSad(sad+1)
-    setOpenReact(!openReact)
-  }
+          body: JSON.stringify(type),
+        }
+      );
+      const data = await res.json();
+      setCheck(data);
+    } catch (error) {
+      console.log("loi trycatch message", error);
+    }
+  };
+  const chooseSmile = async () => {
+    const smile = { content: "funny" };
+    createData(smile);
+    setOpenReact(!openReact);
+  };
+  const chooseAngry = () => {
+    setAngry(angry + 1);
+    setOpenReact(!openReact);
+  };
+  const chooseHeart = () => {
+    setHeart(heart + 1);
+    setOpenReact(!openReact);
+  };
+  const chooseSad = () => {
+    setSad(sad + 1);
+    setOpenReact(!openReact);
+  };
   return (
     <div
       onMouseEnter={handleHover}
@@ -115,23 +112,39 @@ const MessageCard = ({ isReqUserMessage, content, image, messageId, currentChat 
       )}
       {hover && (
         <div className="flex absolute top-[25%] right-[-30px]">
-          <BsEmojiSmile className="cursor-pointer"
-          onClick={handleOpenReactOption}></BsEmojiSmile>
+          <BsEmojiSmile
+            className="cursor-pointer"
+            onClick={handleOpenReactOption}
+          ></BsEmojiSmile>
           <BsThreeDotsVertical className="cursor-pointer"></BsThreeDotsVertical>
         </div>
       )}
       <div className="text-[12px] flex absolute">
         {smile.length > 0 && <BsEmojiSmile></BsEmojiSmile>}
-        {angry.length>0 && <BsEmojiAngry></BsEmojiAngry>}
-        {heart.length>0 && <BsEmojiHeartEyes></BsEmojiHeartEyes>}
-        {sad.length>0 && <BsFillEmojiKissFill></BsFillEmojiKissFill>}
+        {angry.length > 0 && <BsEmojiAngry></BsEmojiAngry>}
+        {heart.length > 0 && <BsEmojiHeartEyes></BsEmojiHeartEyes>}
+        {sad.length > 0 && <BsFillEmojiKissFill></BsFillEmojiKissFill>}
       </div>
-      {openReact && <div className="flex absolute left-[50%]">
-        <BsEmojiSmile onClick={chooseSmile} className="cursor-pointer"></BsEmojiSmile>
-        <BsEmojiAngry onClick={chooseAngry} className="cursor-pointer"></BsEmojiAngry>
-        <BsEmojiHeartEyes onClick={chooseHeart} className="cursor-pointer"></BsEmojiHeartEyes>
-        <BsFillEmojiKissFill onClick={chooseSad} className="cursor-pointer"></BsFillEmojiKissFill>
-      </div>}
+      {openReact && (
+        <div className="flex absolute left-[50%]">
+          <BsEmojiSmile
+            onClick={chooseSmile}
+            className="cursor-pointer"
+          ></BsEmojiSmile>
+          <BsEmojiAngry
+            onClick={chooseAngry}
+            className="cursor-pointer"
+          ></BsEmojiAngry>
+          <BsEmojiHeartEyes
+            onClick={chooseHeart}
+            className="cursor-pointer"
+          ></BsEmojiHeartEyes>
+          <BsFillEmojiKissFill
+            onClick={chooseSad}
+            className="cursor-pointer"
+          ></BsFillEmojiKissFill>
+        </div>
+      )}
     </div>
   );
 };

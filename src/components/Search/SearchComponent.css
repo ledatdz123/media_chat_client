@@ -1,0 +1,17 @@
+.search-contain{
+    padding:1rem 0rem;
+    border: 1px solid rgb(220,220,220);
+    box-shadow: 0 1px 2px rgb(2,2,2);
+    width:300px;
+    heigh:100vh;
+    z-index:10;
+}
+.searchInput{
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(242,242,242,242);
+    padding: 5px 10px;
+    fonts-size:12px;
+    width: 100%;
+    outline: none;
+}

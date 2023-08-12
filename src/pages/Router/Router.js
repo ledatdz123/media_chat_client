@@ -30,6 +30,7 @@ const Router = () => {
             <Route path="/test" element={<Test/>}></Route>
             <Route path="/chatpage" element={<ChatPage/>}></Route>
             <Route path="/status" element={<Status/>}></Route>
+            <Route path="/post/:postId" element={<HomePage/>}></Route>
             <Route path="/status/status/:userId" element={<StatusViewer/>}></Route>
           </Routes>
         </div>

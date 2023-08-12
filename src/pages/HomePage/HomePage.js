@@ -1,9 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import StoryCircle from '../../components/Story/StoryCircle'
 import HomeRight from '../../components/Home/HomeRight'
 import PostCard from '../../components/Post/PostCard'
-import CreatePostModal from '../../components/Post/CreatePostModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { findUserPostAction } from '../../Redux/Post/Action'
+import { currentUserAction } from '../../Redux/Auth/Action'
 const HomePage = () => {
+  const [userIds, setUserIds]=useState()
+  const token=localStorage.getItem("tokenChat")
+  const dispatch=useDispatch()
+  const {auth, post}=useSelector((store)=>store)
+  useEffect(() => {
+    dispatch(currentUserAction(token));
+  }, [token]);
+  useEffect(()=>{
+    const newIds=auth.reqUser?.following?.map((user)=>user.userId) || []
+    setUserIds([auth.reqUser?.userId, ...newIds])
+  }, [auth.reqUser])
+  useEffect(()=>{
+    const data={
+      jwt:token,
+      userIds: [userIds].join(",")
+    }
+    dispatch(findUserPostAction(data))
+  }, [userIds, post.createPost, post.deletePost])
   return (
     <div>
       <div className='mt-10 flex w-[100%] justify-center'>
@@ -14,11 +34,11 @@ const HomePage = () => {
             )}
           </div>
           <div>
-            {[1,1].map((item)=>
-            <PostCard/>)}
+            {post.usersPost.length>0 && post.usersPost.map((item)=>
+            <PostCard post={item}/>)}
           </div>
         </div>
-        <div className='w-[35%]'>
+        <div className='w-[30%]'>
           <HomeRight/>
         </div>
       </div>

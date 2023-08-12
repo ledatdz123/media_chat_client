@@ -7,9 +7,9 @@ const Test = () => {
   const arrayPost=JSON.parse(localStorage.getItem("post"))
   const dispatch=useDispatch()
   console.log('arr', arrayPost)
-  // useEffect(() => { 
-  //   dispatch(reqAction(arrayPost))
-  // }, []); 
+  useEffect(() => { 
+    dispatch(reqAction(arrayPost))
+  }, []); 
   const postGet=useSelector(store=>store.post)
   console.log(postGet)
   const onClick=()=>{
