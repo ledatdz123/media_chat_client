@@ -11,6 +11,7 @@ import Status from "../Status/Status";
 import StatusViewer from "../Status/StatusViewer";
 import ChatInfo from "../ChatInfo/ChatInfo";
 import Profile from "../Profile/Profile";
+import EditAccount from "../../components/EditAccount/EditAccount";
 const Router = () => {
   const location= useLocation()
   return (
@@ -32,6 +33,7 @@ const Router = () => {
             <Route path="/status" element={<Status/>}></Route>
             <Route path="/post/:postId" element={<HomePage/>}></Route>
             <Route path="/status/status/:userId" element={<StatusViewer/>}></Route>
+            <Route path="/account/edit" element={<EditAccount/>}></Route>
           </Routes>
         </div>
       </div>

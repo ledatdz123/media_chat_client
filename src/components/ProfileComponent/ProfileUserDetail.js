@@ -1,8 +1,10 @@
 import React from 'react'
 import { TbCircleDashed } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 const ProfileUserDetail = () => {
     const {auth}=useSelector((store)=>store)
+    const navigate=useNavigate()
     console.log('auth--------------------', auth)
   return (
     <div className='py-10 w-full'>
@@ -16,7 +18,7 @@ const ProfileUserDetail = () => {
             <div className='space-y-5'>
                 <div className='flex space-x-10 items-center'>
                     <p>{auth.reqUser?.username}</p>
-                    <button>Edit Profile</button>
+                    <button onClick={()=>navigate('/account/edit')}>Edit Profile</button>
                     <TbCircleDashed/>
                 </div>
                 <div className='flex space-x-10'>
