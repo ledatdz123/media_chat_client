@@ -1,4 +1,4 @@
-import { FOLLOW_USER, GET_USER_BY_IDS, REQ_USER, SEARCH_USER, SIGN_IN, SIGN_UP, UN_FOLLOW_USER, UPDATE_USER } from "./ActionType";
+import { ERROR_USER, FOLLOW_USER, GET_USER_BY_IDS, REQ_USER, SEARCH_USER, SIGN_IN, SIGN_UP, UN_FOLLOW_USER, UPDATE_USER } from "./ActionType";
 const initialValues={
     signup: null,
     signin: null,
@@ -7,6 +7,7 @@ const initialValues={
     followUser: null,
     unFollowUser: null,
     updateUser: null,
+    errorUser: null,
 }
 export const AuthReducer=(store=initialValues, {type, payload})=>{
     if(type===SIGN_IN){
@@ -32,6 +33,9 @@ export const AuthReducer=(store=initialValues, {type, payload})=>{
     }
     if(type===UN_FOLLOW_USER){
         return {...store, unFollowUser:payload}
+    }
+    if(type===ERROR_USER){
+        return {...store, errorUser:payload}
     }
     return store;
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { FOLLOW_USER, GET_USER_BY_IDS, LOGOUT, REQ_USER, SEARCH_USER, SIGN_IN, SIGN_UP, UN_FOLLOW_USER, UPDATE_USER } from './ActionType'
 import { BASE_API } from '../../config/api'
+import { toast } from 'react-toastify'
 export const signinAction=(data)=>async(dispatch)=>{
     try {
         const res=await axios({
@@ -17,8 +18,9 @@ export const signinAction=(data)=>async(dispatch)=>{
                 payload: res.data
             })
         }
-    } catch (error) {
-        console.log(error)
+    } catch (err) {
+        console.log(err)
+       toast.error(err.response.data.message, {position: 'top-right'})
     }
 }
 export const signupAction=(data)=>async(dispatch)=>{
@@ -36,8 +38,8 @@ export const signupAction=(data)=>async(dispatch)=>{
                 payload: res.data
             })
         }
-    } catch (error) {
-        console.log(error)
+    } catch (err) {
+        console.log(err)
     }
 }
 export const currentUserAction=(token)=>async(dispatch)=>{

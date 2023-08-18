@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {
   Box,
   Button,
+  ChakraProvider,
   FormControl,
   FormErrorMessage,
   Input,
@@ -12,7 +13,7 @@ import * as Yup from "yup";
 import { currentUserAction, signinAction } from "../../Redux/Auth/Action";
 import { useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
-import { getUserProfile } from "../../Redux/User/Action";
+import {toast} from 'react-toastify'
 const Signin = () => {
   const [openSnackbar, setOpenSnackbar]=useState(false)
   const handleSnackBarClose=()=>{
@@ -38,7 +39,6 @@ const Signin = () => {
       navigate("/")
     }
   }, [auth.reqUser])
-
   const validationSchema = Yup.object().shape({
     email: Yup.string().min(3,"Invalid email address").required("Required"),
     password: Yup.string()
@@ -47,7 +47,8 @@ const Signin = () => {
   });
   return (
     <div>
-      <div className="mt-8 ml-auto mr-auto w-2/5">
+      <div className="ml-auto mr-auto w-2/5">
+        <ChakraProvider>
         <Box
           p={20}
           display={"flex"}
@@ -120,12 +121,13 @@ const Signin = () => {
           </Formik>
 
         </Box>
+        </ChakraProvider>
       </div>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackBarClose}>
+      {/* <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackBarClose}>
   <Alert onClose={handleSnackBarClose} severity="success" sx={{ width: '100%' }}>
     This is a success message!
   </Alert>
-</Snackbar>
+</Snackbar> */}
     </div>
   );
 };

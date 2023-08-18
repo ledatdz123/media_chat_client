@@ -1,6 +1,7 @@
 import React from "react";
 import Slidebar from "../../components/Slidebar/Slidebar";
 import { Routes, Route, useLocation } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css'
 import HomePage from "../HomePage/HomePage";
 import Story from "../Story/Story";
 import Test from "../Test/Test";
@@ -12,6 +13,7 @@ import StatusViewer from "../Status/StatusViewer";
 import ChatInfo from "../ChatInfo/ChatInfo";
 import Profile from "../Profile/Profile";
 import EditAccount from "../../components/EditAccount/EditAccount";
+import Layout from "../Layout/Layout";
 const Router = () => {
   const location= useLocation()
   return (
@@ -24,6 +26,7 @@ const Router = () => {
         </div>
         <div className="w-full">
           <Routes>
+            <Route element={<Layout/>}>
             <Route path="/" element={<HomePage/>}></Route>
             <Route path="/username" element={<Profile/>}></Route>
             <Route path="/chatinfo" element={<ChatInfo/>}></Route>
@@ -34,6 +37,7 @@ const Router = () => {
             <Route path="/post/:postId" element={<HomePage/>}></Route>
             <Route path="/status/status/:userId" element={<StatusViewer/>}></Route>
             <Route path="/account/edit" element={<EditAccount/>}></Route>
+            </Route>
           </Routes>
         </div>
       </div>
