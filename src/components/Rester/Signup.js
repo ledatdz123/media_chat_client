@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import {
   Box,
@@ -10,26 +10,34 @@ import {
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { signupAction } from "../../Redux/Auth/Action";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const initialValues = { username: "", password: "" };
+  const initialValues = { email: "", username: "", password: "", role: "USER"};
   const dispatch=useDispatch()
+  const navigate=useNavigate()
   const handleSubmit = (values, actions) => {
     console.log(values)
     dispatch(signupAction(values))
     actions.setSubmitting(false)
   };
-  const isuser=useSelector(store=>store.signup)
-  console.log('signup',isuser)
+  const {auth}=useSelector(store=>store)
+  console.log('signup',auth)
+  useEffect(()=>{
+    if(auth?.signup?.code==='200'){
+      navigate("/login")
+    }
+  }, [auth.reqUser])
   const validationSchema = Yup.object().shape({
     username: Yup.string().min(3,"Invalid email address").required("Required"),
+    email: Yup.string().min(3,"Invalid email address").required("Required"),
     password: Yup.string()
       .min(1, "Password must be at least 8 character")
       .required("password is required"),
   });
   return (
     <div>
-      <div>
+      <div className="mt-8 ml-auto mr-auto w-2/5">
         <Box
           p={20}
           display={"flex"}
@@ -60,6 +68,23 @@ const Signup = () => {
                   )}
                 </Field>
 
+                <Field name="email">
+                  {({ field, form }) => (
+                    <FormControl
+                      isInvalid={form.errors.email && form.touched.email}
+                    >
+                      <Input
+                        className="w-full border"
+                        {...field}
+                        id="email"
+                        placeholder="Email"
+                      ></Input>
+                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+
+
                 <Field name="password">
                   {({ field, form }) => (
                     <FormControl
@@ -77,6 +102,7 @@ const Signup = () => {
                     </FormControl>
                   )}
                 </Field>
+                <div>
                 <p className="text-center">
                   People who use our service may have uploaded your contact
                   information to Instagram. Learn more
@@ -85,6 +111,7 @@ const Signup = () => {
                   By signing up, you agree to ours Terms, Privacy Policy and
                   Cookies Policy
                 </p>
+                </div>
                 <Button
                   className="w-full"
                   mt={4}

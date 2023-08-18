@@ -25,7 +25,7 @@ export const signupAction=(data)=>async(dispatch)=>{
     try {
         const res=await axios({
             method: 'POST',
-            baseURL: `${BASE_API}/auth/`,
+            baseURL: `${BASE_API}/account/`,
             url: "register",
             data: data
         })

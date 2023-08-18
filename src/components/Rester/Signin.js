@@ -47,7 +47,7 @@ const Signin = () => {
   });
   return (
     <div>
-      <div>
+      <div className="mt-8 ml-auto mr-auto w-2/5">
         <Box
           p={20}
           display={"flex"}
@@ -95,14 +95,14 @@ const Signin = () => {
                     </FormControl>
                   )}
                 </Field>
-                <p className="text-center">
+                <div><p className="text-center">
                   People who use our service may have uploaded your contact
                   information to Instagram. Learn more
                 </p>
                 <p className="text-center">
                   By signing up, you agree to ours Terms, Privacy Policy and
                   Cookies Policy
-                </p>
+                </p></div>
                 <Button
                   className="w-full"
                   mt={4}
@@ -112,6 +112,9 @@ const Signin = () => {
                 >
                   Signin
                 </Button>
+                <p className="text-center"><span>If you don't have account. </span>
+                <span onClick={()=>navigate('/signup')} className="text-blue-600 cursor-pointer">Click here to register</span>
+                </p>
               </Form>
             )}
           </Formik>
