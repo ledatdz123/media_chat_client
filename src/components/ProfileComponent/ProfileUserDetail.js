@@ -1,3 +1,4 @@
+import { Button, ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
 import { TbCircleDashed } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
@@ -18,7 +19,9 @@ const ProfileUserDetail = () => {
             <div className='space-y-5'>
                 <div className='flex space-x-10 items-center'>
                     <p>{auth.reqUser?.username}</p>
-                    <button onClick={()=>navigate('/account/edit')}>Edit Profile</button>
+                    <ChakraProvider>
+                        <Button onClick={()=>navigate('/account/edit')}>Edit Profile</Button>
+                    </ChakraProvider>
                     <TbCircleDashed/>
                 </div>
                 <div className='flex space-x-10'>

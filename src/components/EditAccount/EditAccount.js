@@ -10,10 +10,11 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChangePhotoModal from "./ChangePhotoModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
+import { currentUserAction, updateUser } from "../../Redux/Auth/Action";
 
 const EditAccount = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const EditAccount = () => {
   const [imageFile, setImageFile] = useState(null);
   const token = localStorage.getItem("tokenChat");
   const toast = useToast();
+  const { auth } = useSelector((store) => store);
   const [initialValues, setInitialValues] = useState({
     name: "",
     username: "",
@@ -30,15 +32,27 @@ const EditAccount = () => {
     gender: "",
     website: "",
   });
-  const { auth } = useSelector((store) => store);
+  useEffect(() => {
+    dispatch(currentUserAction(token));
+  }, [token]);
+  useEffect(()=>{
+    console.log("reqUser", auth.reqUser)
+    const newValue={}
+    for(let item in initialValues){
+      if(auth.reqUser && auth.reqUser[item]){
+        newValue[item]=auth.reqUser[item]
+      }
+    }
+    formik.setValues(newValue)
+  }, [auth.reqUser])
   const formik = useFormik({
     initialValues: { ...initialValues },
     onSubmit: (value) => {
       const data = {
         jwt: token,
-        data: { ...value, id: auth.reqUser?.userId },
+        data: { ...value, userId: auth.reqUser?.userId },
       };
-      dispatch();
+      dispatch(updateUser(data));
       toast({
         title: "Account updated...",
         status: "success",

@@ -18,7 +18,7 @@ const Signin = () => {
   const handleSnackBarClose=()=>{
     setOpenSnackbar(false)
   }
-  const initialValues = { username: "", password: "" };
+  const initialValues = { email: "suatho@gmail.com", password: "123456" };
   const dispatch=useDispatch()
   const handleSubmit = (values, actions) => {
     console.log(values)
@@ -40,7 +40,7 @@ const Signin = () => {
   }, [auth.reqUser])
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().min(3,"Invalid email address").required("Required"),
+    email: Yup.string().min(3,"Invalid email address").required("Required"),
     password: Yup.string()
       .min(1, "Password must be at least 8 character")
       .required("password is required"),
@@ -62,18 +62,18 @@ const Signin = () => {
           >
             {(formikProps) => (
               <Form className="space-y-8">
-                <Field name="username">
+                <Field name="email">
                   {({ field, form }) => (
                     <FormControl
-                      isInvalid={form.errors.username && form.touched.username}
+                      isInvalid={form.errors.email && form.touched.email}
                     >
                       <Input
                         className="w-full border"
                         {...field}
-                        id="username"
+                        id="email"
                         placeholder="Mobile Number or Username"
                       ></Input>
-                      <FormErrorMessage>{form.errors.username}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>

@@ -5,11 +5,16 @@ import PostCard from '../../components/Post/PostCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { findUserPostAction } from '../../Redux/Post/Action'
 import { currentUserAction } from '../../Redux/Auth/Action'
+import { postDefault } from '../../components/Post/DefaultPost'
+import { Button, ChakraProvider } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 const HomePage = () => {
   const [userIds, setUserIds]=useState()
   const token=localStorage.getItem("tokenChat")
   const dispatch=useDispatch()
   const {auth, post}=useSelector((store)=>store)
+  console.log('auth-------------', auth)
+  const navigate=useNavigate()
   useEffect(() => {
     dispatch(currentUserAction(token));
   }, [token]);
@@ -34,8 +39,20 @@ const HomePage = () => {
             )}
           </div>
           <div>
-            {post.usersPost.length>0 && post.usersPost.map((item)=>
-            <PostCard post={item}/>)}
+            {post.usersPost.length>0 ? post.usersPost.map((item)=>
+            <PostCard post={item}/>)
+            : 
+            !auth.reqUser && <div>
+              <PostCard post={postDefault}/>
+              <div className='mt-8 flex flex-col items-center justify-between gap-1'>
+                <p>You are not logged in.</p>
+                <p>Let's login to experience.</p>
+                <ChakraProvider>
+                  <Button onClick={()=>navigate('/login')} className='mt-1'>Login now</Button>
+                </ChakraProvider>
+              </div>
+            </div>
+            }
           </div>
         </div>
         <div className='w-[30%]'>

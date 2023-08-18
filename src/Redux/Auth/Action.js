@@ -5,7 +5,7 @@ export const signinAction=(data)=>async(dispatch)=>{
     try {
         const res=await axios({
             method: 'POST',
-            baseURL: `${BASE_API}/auth/`,
+            baseURL: `${BASE_API}/`,
             url: "login",
             data: data
         })
@@ -62,16 +62,16 @@ export const currentUserAction=(token)=>async(dispatch)=>{
         console.log(error)
     }
 }
-export const updateUser=(token, data)=>async(dispatch)=>{
+export const updateUser=(data)=>async(dispatch)=>{
     try {
         const res= await axios(
             {
                 method: 'PUT',
                 baseURL: `${BASE_API}/api/users/`,
                 url: `update`,
-                data: data,
+                data: data.data,
                 headers: {
-                    "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${token}`,
+                    "Authorization": /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${data.jwt}`,
                     "Content-Type": "application/json" 
                 },
             }
