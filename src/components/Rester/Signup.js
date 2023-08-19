@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {
   Box,
   Button,
+  ChakraProvider,
   FormControl,
   FormErrorMessage,
   Input,
@@ -37,7 +38,8 @@ const Signup = () => {
   });
   return (
     <div>
-      <div className="mt-8 ml-auto mr-auto w-2/5">
+      <div className="ml-auto mr-auto w-2/4">
+      <ChakraProvider>
         <Box
           p={20}
           display={"flex"}
@@ -125,6 +127,7 @@ const Signup = () => {
             )}
           </Formik>
         </Box>
+        </ChakraProvider>
       </div>
     </div>
   )

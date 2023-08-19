@@ -1,7 +1,7 @@
 import React from "react";
 import Slidebar from "../../components/Slidebar/Slidebar";
 import { Routes, Route, useLocation } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css'
+import "react-toastify/dist/ReactToastify.css";
 import HomePage from "../HomePage/HomePage";
 import Story from "../Story/Story";
 import Test from "../Test/Test";
@@ -13,43 +13,47 @@ import StatusViewer from "../Status/StatusViewer";
 import ChatInfo from "../ChatInfo/ChatInfo";
 import Profile from "../Profile/Profile";
 import EditAccount from "../../components/EditAccount/EditAccount";
-import Layout from "../Layout/Layout";
+import Layout from "../LayoutGlobal/Layout";
 const Router = () => {
-  const location= useLocation()
+  const location = useLocation();
   return (
     <div>
-
-      {(location.pathname !=="/login" && location.pathname!=="/signup") &&
-      <div className="flex">
-        <div className="w-[20%] border border-1-slate-500">
-          <Slidebar />
+      {location.pathname !== "/login" && location.pathname !== "/signup" && (
+        <div className="flex">
+          <div className="w-[20%] border border-1-slate-500">
+            <Slidebar />
+          </div>
+          <div className="w-full">
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />}></Route>
+                <Route path="/username" element={<Profile />}></Route>
+                <Route path="/chatinfo" element={<ChatInfo />}></Route>
+                <Route path="/story" element={<Story />}></Route>
+                <Route path="/test" element={<Test />}></Route>
+                <Route path="/chatpage" element={<ChatPage />}></Route>
+                <Route path="/status" element={<Status />}></Route>
+                <Route path="/post/:postId" element={<HomePage />}></Route>
+                <Route
+                  path="/status/status/:userId"
+                  element={<StatusViewer />}
+                ></Route>
+                <Route path="/account/edit" element={<EditAccount />}></Route>
+              </Route>
+            </Routes>
+          </div>
         </div>
-        <div className="w-full">
+      )}
+      {(location.pathname === "/login" || location.pathname === "/signup") && (
+        <div>
           <Routes>
-            <Route element={<Layout/>}>
-            <Route path="/" element={<HomePage/>}></Route>
-            <Route path="/username" element={<Profile/>}></Route>
-            <Route path="/chatinfo" element={<ChatInfo/>}></Route>
-            <Route path="/story" element={<Story/>}></Route>
-            <Route path="/test" element={<Test/>}></Route>
-            <Route path="/chatpage" element={<ChatPage/>}></Route>
-            <Route path="/status" element={<Status/>}></Route>
-            <Route path="/post/:postId" element={<HomePage/>}></Route>
-            <Route path="/status/status/:userId" element={<StatusViewer/>}></Route>
-            <Route path="/account/edit" element={<EditAccount/>}></Route>
+            <Route element={<Layout />}>
+              <Route path="/signup" element={<Signup></Signup>}></Route>
+              <Route path="/login" element={<Signin></Signin>}></Route>
             </Route>
           </Routes>
         </div>
-      </div>
-}
-{(location.pathname==="/login" || location.pathname==="/signup") &&
-      <div>
-        <Routes>
-        <Route path="/signup" element={<Signup></Signup>}></Route>
-        <Route path="/login" element={<Signin></Signin>}></Route>
-        </Routes>
-      </div>
-}
+      )}
     </div>
   );
 };

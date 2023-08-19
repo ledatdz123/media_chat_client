@@ -7,6 +7,7 @@ import { EmojiMessageReducer } from '../EmojiMessage/Reducer'
 import { PostReducer } from '../Post/Reducer'
 import { CommentReducer } from '../Comment/Reducer'
 import { UserReducer } from '../User/Reducer'
+import GlobalLoadingReducer from '../Loading/GlobalLoadingReducer'
 const rootReducer=combineReducers({
     auth: AuthReducer,
     user: UserReducer,
@@ -15,5 +16,6 @@ const rootReducer=combineReducers({
     emoji: EmojiMessageReducer,
     post: PostReducer,
     comment: CommentReducer,
+    loading: GlobalLoadingReducer
 })
 export const store=legacy_createStore(rootReducer, applyMiddleware(thunk))

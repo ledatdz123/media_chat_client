@@ -12,14 +12,12 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { currentUserAction, signinAction } from "../../Redux/Auth/Action";
 import { useNavigate } from "react-router-dom";
-import { Alert, Snackbar } from "@mui/material";
-import {toast} from 'react-toastify'
 const Signin = () => {
   const [openSnackbar, setOpenSnackbar]=useState(false)
   const handleSnackBarClose=()=>{
     setOpenSnackbar(false)
   }
-  const initialValues = { email: "suatho@gmail.com", password: "123456" };
+  const initialValues = { email: "testuser@gmail.com", password: "123456" };
   const dispatch=useDispatch()
   const handleSubmit = (values, actions) => {
     console.log(values)
@@ -47,7 +45,7 @@ const Signin = () => {
   });
   return (
     <div>
-      <div className="ml-auto mr-auto w-2/5">
+      <div className="ml-auto mr-auto w-2/4">
         <ChakraProvider>
         <Box
           p={20}
@@ -122,12 +120,7 @@ const Signin = () => {
 
         </Box>
         </ChakraProvider>
-      </div>
-      {/* <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackBarClose}>
-  <Alert onClose={handleSnackBarClose} severity="success" sx={{ width: '100%' }}>
-    This is a success message!
-  </Alert>
-</Snackbar> */}
+      </div>   
     </div>
   );
 };
