@@ -32,7 +32,6 @@ export const signinAction = (data) => async (dispatch) => {
       dispatch(controllLoading(false))
     }
   } catch (err) {
-    console.log(err);
     dispatch(controllLoading(false))
     if(err.code==='ERR_NETWORK'){
         toast.error(err.message, { position: "top-right" });
