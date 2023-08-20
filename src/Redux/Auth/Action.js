@@ -29,6 +29,7 @@ export const signinAction = (data) => async (dispatch) => {
         type: SIGN_IN,
         payload: res.data,
       });
+      toast.success('Login Successfull', { position: "top-right" });
       dispatch(controllLoading(false))
     }
   } catch (err) {
