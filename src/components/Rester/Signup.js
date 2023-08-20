@@ -30,10 +30,10 @@ const Signup = () => {
     }
   }, [auth.reqUser])
   const validationSchema = Yup.object().shape({
-    username: Yup.string().min(3,"Invalid email address").required("Required"),
-    email: Yup.string().min(3,"Invalid email address").required("Required"),
+    username: Yup.string().min(3,"Invalid Username").required("Required"),
+    email: Yup.string().email("Invalid email address").required("Required"),
     password: Yup.string()
-      .min(1, "Password must be at least 8 character")
+      .min(6, "Password must be at least 6 character")
       .required("password is required"),
   });
   return (

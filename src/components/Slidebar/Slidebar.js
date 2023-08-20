@@ -3,8 +3,10 @@ import { IoReorderThreeOutline } from "react-icons/io5";
 import { menu } from "./SlidebarConfig";
 import { useNavigate } from "react-router-dom";
 import CreatePostModal from "../Post/CreatePostModal";
-import { ChakraProvider, useDisclosure } from "@chakra-ui/react";
+import { ChakraProvider, position, useDisclosure } from "@chakra-ui/react";
 import SearchComponent from "../Search/SearchComponent";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Slidebar = () => {
   const [activeTab, setActiveTab]=useState("");
@@ -12,10 +14,16 @@ const Slidebar = () => {
   const [isSearchVisible, setIsSearchVisible]=useState(false)
 
   const navigate=useNavigate()
+  const {auth}=useSelector(store=>store)
+  console.log('------------auth-----------', auth)
   const handleTabClick=(title)=>{
     setActiveTab(title)
     if(title==='Profile'){
-      navigate('/username')
+      if(auth.reqUser===null){
+        toast.error('Login to experience', {position: "top-right"})
+        navigate('/')
+      }
+      navigate(`/${auth.reqUser?.username}`)
     }
     else if(title==='Message'){
       navigate('/chatpage')

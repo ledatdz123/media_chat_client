@@ -44,6 +44,7 @@ export const signinAction = (data) => async (dispatch) => {
 };
 export const signupAction = (data) => async (dispatch) => {
   try {
+    dispatch(controllLoading(true))
     const res = await axios({
       method: "POST",
       baseURL: `${BASE_API}/account/`,
@@ -56,9 +57,17 @@ export const signupAction = (data) => async (dispatch) => {
         type: SIGN_UP,
         payload: res.data,
       });
+      dispatch(controllLoading(false))
     }
   } catch (err) {
     console.log(err);
+    dispatch(controllLoading(false))
+    if(err.code==='ERR_NETWORK'){
+        toast.error(err.message, { position: "top-right" });
+    }
+    if (err.response?.status !== "201") {
+      toast.error(err.response?.data.message, { position: "top-right" });
+    }
   }
 };
 export const currentUserAction = (token) => async (dispatch) => {
