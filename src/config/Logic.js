@@ -17,9 +17,12 @@ export const isSavedPostByUser=(user, postId)=>{
     }
     return false
 }
+export const isReqUser=(userId1, userId2)=>{
+    if(userId1 && userId2) return userId1===userId2
+}
 export const isFollowing=(reqUser, user2)=>{
     if(reqUser && user2){
-        for(let item of user2.follower){
+        for(let item of user2.followers){
             if(reqUser.id===item.id) return true
         }
     }

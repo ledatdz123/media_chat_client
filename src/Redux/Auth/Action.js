@@ -2,7 +2,9 @@ import axios from "axios";
 import {
   FOLLOW_USER,
   GET_USER_BY_IDS,
+  GET_USER_BY_USERNAME,
   LOGOUT,
+  POPULAR_USER,
   REQ_USER,
   SEARCH_USER,
   SIGN_IN,
@@ -155,6 +157,47 @@ export const findUserByUserIdsAction = (data) => async (dispatch) => {
     console.log("searchData", resData);
     dispatch({
       type: GET_USER_BY_IDS,
+      payload: resData,
+    });
+  } catch (error) {
+    console.log("catch error", error);
+  }
+};
+export const findUserByUserName = (data) => async (dispatch) => {
+  try {
+    const res = await axios({
+      method: "GET",
+      baseURL: `${BASE_API}/api/users/`,
+      url: `${data.data}`,
+      headers: {
+        Authorization: /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${data.jwt}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const resData = await res.data;
+    console.log("searchData", resData);
+    dispatch({
+      type: GET_USER_BY_USERNAME,
+      payload: resData,
+    });
+  } catch (error) {
+    console.log("catch error", error);
+  }
+};
+export const getPopularUserAction = (data) => async (dispatch) => {
+  try {
+    const res = await axios({
+      method: "GET",
+      baseURL: `${BASE_API}/api/users/popular`,
+      headers: {
+        Authorization: /*"Bearer " + localStorage.getItem("token")*/ `Bearer ${data.jwt}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const resData = await res.data;
+    console.log("popular", resData);
+    dispatch({
+      type: POPULAR_USER,
       payload: resData,
     });
   } catch (error) {

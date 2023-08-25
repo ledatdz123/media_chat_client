@@ -1,7 +1,7 @@
 import React from "react";
 import SuggestionCard from "./SuggestionCard";
 
-const HomeRight = () => {
+const HomeRight = ({auth}) => {
   return (
     <div className="border">
         <div className="flex justify-between items-center">
@@ -18,8 +18,8 @@ const HomeRight = () => {
           <p className="text-sm font-semibold opacity-70 text-blue-700">switch</p>
         </div>
         <div className="space-y-5 mt-6">
-          {[1, 1, 1, 1].map((item) => (
-            <SuggestionCard />
+          {auth.popularUser?.map((item) => (
+            <SuggestionCard popularUser={item}/>
           ))}
         </div>
     </div>

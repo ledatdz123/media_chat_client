@@ -1,7 +1,8 @@
 .search-contain{
     padding:1rem 0rem;
     border: 1px solid rgb(220,220,220);
-    box-shadow: 0 1px 2px rgb(2,2,2);
+    //box-shadow: 0 1px 2px rgb(2,2,2);
+    border-radius: 6px;
     width:300px;
     heigh:100vh;
     z-index:10;

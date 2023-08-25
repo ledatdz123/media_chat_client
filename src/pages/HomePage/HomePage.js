@@ -4,7 +4,7 @@ import HomeRight from '../../components/Home/HomeRight'
 import PostCard from '../../components/Post/PostCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { findUserPostAction } from '../../Redux/Post/Action'
-import { currentUserAction } from '../../Redux/Auth/Action'
+import { currentUserAction, getPopularUserAction } from '../../Redux/Auth/Action'
 import { postDefault } from '../../components/Post/DefaultPost'
 import { Button, ChakraProvider } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
@@ -28,7 +28,8 @@ const HomePage = () => {
       userIds: [userIds].join(",")
     }
     dispatch(findUserPostAction(data))
-  }, [userIds, post.createPost, post.deletePost])
+    dispatch(getPopularUserAction(data))
+  }, [userIds, auth.followUser, auth.unfollowUser, post.createPost, post.deletePost])
   return (
     <div>
       <div className='mt-10 flex w-[100%] justify-center'>
@@ -56,7 +57,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className='w-[30%]'>
-          <HomeRight/>
+          <HomeRight auth={auth}/>
         </div>
       </div>
     </div>

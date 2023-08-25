@@ -1,4 +1,4 @@
-import { CREATE_NEW_POST, DELETE_POST, GET_SINGLE_POST, GET_USER_POST, LIKE_POST, SAVE_POST, UN_LIKE_POST, UN_SAVE_POST } from "./ActionType"
+import { CREATE_NEW_POST, DELETE_POST, GET_SINGLE_POST, GET_USER_POST, LIKE_POST, REQ_USER_POST, SAVE_POST, UN_LIKE_POST, UN_SAVE_POST } from "./ActionType"
 
 const initialValue={
     createPost: null,
@@ -9,6 +9,7 @@ const initialValue={
     savedPost:null,
     unSavedPost:null,
     singlePost:null,
+    reqUserPost:null,
 }
 export const PostReducer=(store=initialValue, {type, payload})=>{
     if(type===CREATE_NEW_POST){
@@ -27,6 +28,8 @@ export const PostReducer=(store=initialValue, {type, payload})=>{
         return {...store, unSavedPost: payload}
     }else if(type===GET_SINGLE_POST){
         return {...store, singlePost: payload}
+    }else if(type===REQ_USER_POST){
+        return {...store, reqUserPost: payload}
     }
     return store
 }
