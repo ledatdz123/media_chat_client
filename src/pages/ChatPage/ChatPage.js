@@ -23,7 +23,11 @@ import {
 import { createChat, getAllChat } from "../../Redux/Chat/Action";
 import { getAllMessage } from "../../Redux/Message/Action";
 import ChatInput from "../../components/ChatInput/ChatInput";
+import SockJS from "sockjs-client";
+import {over} from 'stompjs'
+import Stomp from 'stompjs';
 
+import { BASE_API } from "../../config/api";
 const ChatPage = () => {
   const [queryChat, setQueryChat] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
@@ -35,8 +39,68 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
   const { auth, chat, message } = useSelector((store) => store);
+  const token = localStorage.getItem("tokenChat");
+
+  //socket
+  const [stompClient, setStompClient]=useState()
+  const [isConnect, setIsConnect]=useState(false)
+  const [messages, setMessages]=useState([])
+  const connect=()=>{
+    const sock=new SockJS(`${BASE_API}/ws`)
+    const temp=over(sock)
+    setStompClient(temp)
+    const headers={
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      //"X-XSRF-TOKEN": getCookie("XSRF-TOKEN")
+    }
+    temp.connect(headers, onConnect, onError)
+  }
+  // function getCookie(name){
+  //   const value=`; ${document.cookie}`;
+  //   const parts=value.split(`; ${name}=`)
+  //   if(parts.length===2){
+  //     return parts.pop().split(";").shift()
+  //   }
+  // }
+  const onError=(error)=>{
+    console.log('error', error)
+  }
+  const onConnect=()=>{
+    setIsConnect(true)
+    console.log('no error')
+  }
+  const onReceive=(payload)=>{
+    console.log("---------------recieve---------------", JSON.parse(payload.body))
+    const recieve=JSON.parse(payload.body)
+    setMessages([...messages, recieve])
+  }
+  useEffect(()=>{
+    connect()
+  }, [])  
+
+  useEffect(()=>{
+    if(isConnect && stompClient && auth.reqUser && currentChat){
+      //const subscription=stompClient.subscribe("/group/"+currentChat.id.toString(), onReceive)
+      const subscription=stompClient.subscribe('/chatroom/public', onReceive);
+      console.log("hello--------------------------")
+      return ()=>{
+        subscription.unsubscribe()
+      }
+    }
+  })
+  useEffect(()=>{
+    if(message.newMessage && stompClient){
+      setMessages([...messages, message.newMessage])
+      stompClient?.send("/app/message", {}, JSON.stringify(message.newMessage))
+    }
+  }, [message.newMessage])
+  useEffect(()=>{
+    setMessages(message.messages)
+  }, [message.messages])
+  console.log("--------------messages----------------", messages)
+
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -61,7 +125,6 @@ const ChatPage = () => {
     setIsGroup(!isGroup);
     setAnchorEl(null);
   };
-  const token = localStorage.getItem("tokenChat");
   if (token === null) {
     navigate("/");
   }
@@ -248,8 +311,8 @@ const ChatPage = () => {
                     alt=""
                   />
                   <p>
-                    {currentChat.group
-                      ? currentChat.chat_name
+                    {currentChat?.group
+                      ? currentChat?.chat_name
                       : auth.reqUser?.userId === currentChat.users[0].userId
                       ? currentChat.users[1].username
                       : currentChat.users[0].username}
@@ -265,8 +328,8 @@ const ChatPage = () => {
               {/* message section */}
               <div className="px-6 h-[75vh] overflow-y-scroll bg-blue-200">
                 <div className="space-y-2 flex flex-col justify-center mt-5">
-                  {message.messages.length > 0 &&
-                    message.messages?.map((item, i) => (
+                  {messages.length > 0 &&
+                    messages?.map((item, i) => (
                       <MessageCard
                         isReqUserMessage={
                           item.userApp.userId !== auth.reqUser?.userId

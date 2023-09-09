@@ -13,7 +13,6 @@ const HomePage = () => {
   const token=localStorage.getItem("tokenChat")
   const dispatch=useDispatch()
   const {auth, post}=useSelector((store)=>store)
-  console.log('auth-------------', auth)
   const navigate=useNavigate()
   useEffect(() => {
     dispatch(currentUserAction(token));

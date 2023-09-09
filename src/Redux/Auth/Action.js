@@ -20,7 +20,7 @@ export const signinAction = (data) => async (dispatch) => {
     dispatch(controllLoading(true))
     const res = await axios({
       method: "POST",
-      baseURL: `${BASE_API}/`,
+      baseURL: `${BASE_API}/auth/`,
       url: "login",
       data: data,
     });
@@ -107,7 +107,6 @@ export const updateUser = (data) => async (dispatch) => {
       },
     });
     const resData = await res.data;
-    console.log("searchData", resData);
     dispatch({
       type: UPDATE_USER,
       payload: resData,
@@ -128,7 +127,6 @@ export const searchUser = (token, data) => async (dispatch) => {
       },
     });
     const resData = await res.data;
-    console.log("searchData", resData);
     dispatch({
       type: SEARCH_USER,
       payload: resData,
@@ -175,7 +173,6 @@ export const findUserByUserName = (data) => async (dispatch) => {
       },
     });
     const resData = await res.data;
-    console.log("searchData", resData);
     dispatch({
       type: GET_USER_BY_USERNAME,
       payload: resData,
@@ -195,7 +192,6 @@ export const getPopularUserAction = (data) => async (dispatch) => {
       },
     });
     const resData = await res.data;
-    console.log("popular", resData);
     dispatch({
       type: POPULAR_USER,
       payload: resData,
@@ -216,7 +212,6 @@ export const followUserAction = (data, token) => async (dispatch) => {
       },
     });
     const resData = await res.data;
-    console.log("searchData", resData);
     dispatch({
       type: FOLLOW_USER,
       payload: resData,
@@ -237,7 +232,6 @@ export const unFollowUserAction = (data, token) => async (dispatch) => {
       },
     });
     const resData = await res.data;
-    console.log("searchData", resData);
     dispatch({
       type: UN_FOLLOW_USER,
       payload: resData,

@@ -54,7 +54,6 @@ const ChatInput = ({
     let emoji = String.fromCodePoint(...codeArray);
     setContent(content + emoji);
   };
-  console.log("cont-------------ent-----------", content);
   return (
     <div className="footer flex justify-center items-center relative">
       <div className="flex justify-center items-center mt-4">
