@@ -79,12 +79,19 @@ const ChatPage = () => {
   useEffect(()=>{
     connect()
   }, [])  
-
+  const userJoin=()=>{
+    var chatMessage = {
+      chatId: currentChat.id, 
+      content: 'Hello',
+    };
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+}
   useEffect(()=>{
     if(isConnect && stompClient && auth.reqUser && currentChat){
       //const subscription=stompClient.subscribe("/group/"+currentChat.id.toString(), onReceive)
       const subscription=stompClient.subscribe('/chatroom/public', onReceive);
       console.log("hello--------------------------")
+      userJoin()
       return ()=>{
         subscription.unsubscribe()
       }

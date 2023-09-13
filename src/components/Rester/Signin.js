@@ -33,7 +33,7 @@ const Signin = () => {
   }, [token])
   const navigate=useNavigate();
   useEffect(()=>{
-    if(auth.reqUser?.username){
+    if(auth.signin.user?.username){
       navigate("/")
     }
   }, [auth.reqUser])
